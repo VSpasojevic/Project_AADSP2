@@ -9,19 +9,17 @@
 double sampleBuffer[MAX_NUM_CHANNEL][BLOCK_SIZE];
 //trebaju mi koeficjenti, gain, iir2, mode, processing funkcija,
 
-
 double coefficients_HPF[6] = { 0.95079708342298741000, -1.90159416684597480000, 0.95079708342298741000,1.00000000000000000000,-1.89933342011226030000,0.90416304087280419000 };
 double coefficients_LPF[6] = { 0.00461263667292077970, 0.00922527334584155940, 0.00461263667292077970,1.00000000000000000000,-1.79909640948466820000,0.81751240338475795000 };
+
 short mode1 = 1;
 short mode2 = 0;
 
 
 double gain = 0.50;
 
-double history[BLOCK_SIZE];
-
-double x_history[BLOCK_SIZE];
-double y_history[BLOCK_SIZE];
+double x_history[2];
+double y_history[2];
 
 double x_history1[BLOCK_SIZE];
 double y_history1[BLOCK_SIZE];
@@ -43,7 +41,7 @@ double second_order_IIR(double input, double* coefficients, double* x_history, d
 
 	output += coefficients[0] * input;			 /* A0 * x(n)     */
 	output += coefficients[1] * x_history[0];	/* A1 * x(n-1) */
-	output += coefficients[2] * history[1];		/* A2 * x(n-2)   */
+	output += coefficients[2] * x_history[1];	/* A2 * x(n-2)   */
 	output -= coefficients[4] * y_history[0];	/* B1 * y(n-1) */
 	output -= coefficients[5] * y_history[1];	/* B2 * y(n-2)   */
 
@@ -86,7 +84,9 @@ void processing(double inputBuffer[][BLOCK_SIZE], double outputBuffer[][BLOCK_SI
 		{
 			for (int i = 0; i < BLOCK_SIZE; i++)
 			{
+				//HPF
 				outputBuffer[0][i] = second_order_IIR(leftBuffer[i], coefficients_HPF, x_history, y_history);
+				
 			}
 
 		}
@@ -94,6 +94,7 @@ void processing(double inputBuffer[][BLOCK_SIZE], double outputBuffer[][BLOCK_SI
 		{
 			for (int i = 0; i < BLOCK_SIZE; i++)
 			{
+				//PASS
 				outputBuffer[0][i] = leftBuffer[i];
 			}
 		}
@@ -104,6 +105,7 @@ void processing(double inputBuffer[][BLOCK_SIZE], double outputBuffer[][BLOCK_SI
 	{
 		for (int i = 0; i < BLOCK_SIZE; i++)
 		{
+			//LPF
 			outputBuffer[0][i] = second_order_IIR(leftBuffer[i], coefficients_LPF, x_history1, y_history1);
 			outputBuffer[2][i] = second_order_IIR(leftBuffer[i], coefficients_LPF, x_history2, y_history2);
 
@@ -118,6 +120,7 @@ void processing(double inputBuffer[][BLOCK_SIZE], double outputBuffer[][BLOCK_SI
 		{
 			for (int i = 0; i < BLOCK_SIZE; i++)
 			{
+				//HPF
 				outputBuffer[1][i] = second_order_IIR(rightBuffer[i], coefficients_HPF, x_history3, y_history3);
 			}
 
@@ -126,6 +129,7 @@ void processing(double inputBuffer[][BLOCK_SIZE], double outputBuffer[][BLOCK_SI
 		{
 			for (int i = 0; i < BLOCK_SIZE; i++)
 			{
+				//PASS
 				outputBuffer[1][i] = rightBuffer[i];
 			}
 		}
@@ -136,6 +140,7 @@ void processing(double inputBuffer[][BLOCK_SIZE], double outputBuffer[][BLOCK_SI
 	{
 		for (int i = 0; i < BLOCK_SIZE; i++)
 		{
+			//LPF
 			outputBuffer[1][i] = second_order_IIR(rightBuffer[i], coefficients_LPF, x_history4, y_history4);
 		}
 	}
