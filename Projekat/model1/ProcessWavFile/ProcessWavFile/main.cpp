@@ -11,7 +11,13 @@ double sampleBuffer[MAX_NUM_CHANNEL][BLOCK_SIZE];
 double coefficients_HPF[6] = { 0.95079708342298741000, -1.90159416684597480000, 0.95079708342298741000,1.00000000000000000000,-1.89933342011226030000,0.90416304087280419000 };
 double coefficients_LPF[6] = { 0.00461263667292077970, 0.00922527334584155940, 0.00461263667292077970,1.00000000000000000000,-1.79909640948466820000,0.81751240338475795000 };
 
-short mode1 = 0;
+
+//0,0---> HPF
+//1,0---> LPF --> DEFAULT
+//0,1---> PASS
+
+
+short mode1 = 1;
 short mode2 = 0;
 
 
@@ -76,7 +82,7 @@ void processing() {
 	for (int i = 0; i < BLOCK_SIZE; i++)
 	{
 
-		*(leftPtr + i) = *(leftChannnel +i ) * gain;
+		*(leftPtr + i) = *(leftChannnel + i) * gain;
 
 		*(rightPtr + i)= *(rightChannnel + i) * gain;
 
@@ -179,6 +185,14 @@ int main(int argc, char* argv[])
 	strcpy(WavOutputName, argv[2]);
 	wav_out = OpenWavFileForRead(WavOutputName, "wb");
 	//-------------------------------------------------
+
+	//read agruments from command line
+	mode1 = atoi(argv[3]);
+	mode1 = atoi(argv[4]);
+
+	gain = atof(argv[5]);
+
+
 
 	// Read input wav header
 	//-------------------------------------------------
