@@ -1,8 +1,8 @@
 ﻿  main.cpp
-c:\users\spask\desktop\git\project_aadsp2\projekat\model1\processwavfile\processwavfile\main.cpp(251): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\spask\desktop\git\project_aadsp2\projekat\model1\processwavfile\processwavfile\main.cpp(183): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\student\desktop\ra56-2015\projekat\model1\processwavfile\processwavfile\main.cpp(263): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\student\desktop\ra56-2015\projekat\model1\processwavfile\processwavfile\main.cpp(193): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\spask\desktop\git\project_aadsp2\projekat\model1\processwavfile\processwavfile\main.cpp(185): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\student\desktop\ra56-2015\projekat\model1\processwavfile\processwavfile\main.cpp(195): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-  ProcessWavFile.vcxproj -> C:\Users\spask\Desktop\git\Project_AADSP2\Projekat\model1\ProcessWavFile\Debug\ProcessWavFile.exe
-  ProcessWavFile.vcxproj -> C:\Users\spask\Desktop\git\Project_AADSP2\Projekat\model1\ProcessWavFile\Debug\ProcessWavFile.pdb (Full PDB)
+  ProcessWavFile.vcxproj -> C:\Users\student\Desktop\ra56-2015\Projekat\model1\ProcessWavFile\Debug\ProcessWavFile.exe
+  ProcessWavFile.vcxproj -> C:\Users\student\Desktop\ra56-2015\Projekat\model1\ProcessWavFile\Debug\ProcessWavFile.pdb (Full PDB)

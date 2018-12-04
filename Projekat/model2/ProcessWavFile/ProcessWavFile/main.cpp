@@ -12,13 +12,9 @@ DSPfract sampleBuffer[MAX_NUM_CHANNEL][BLOCK_SIZE];
 //trebaju mi koeficjenti, gain, iir2, mode, processing funkcija,
 //skaliranje svih koeficijenata
 
-//DSPfract coefficients_HPF[6] = { FRACT_NUM(0.95079708342298741000),FRACT_NUM(-1.90159416684597480000), FRACT_NUM(0.95079708342298741000),FRACT_NUM(1.00000000000000000000),FRACT_NUM(-1.89933342011226030000),FRACT_NUM(0.90416304087280419000) };
-//DSPfract coefficients_LPF[6] = { FRACT_NUM(0.00461263667292077970), FRACT_NUM(0.00922527334584155940), FRACT_NUM(0.00461263667292077970),FRACT_NUM(1.00000000000000000000),FRACT_NUM(-1.79909640948466820000),FRACT_NUM(0.81751240338475795000) };
-
 
 DSPfract coefficients_HPF[6] = { FRACT_NUM(0.475398541711493705),FRACT_NUM(-0.9507970834229874), FRACT_NUM(0.475398541711493705),FRACT_NUM(0.50000000000000000000),FRACT_NUM(-0.94966671005613015),FRACT_NUM(0.452081520436402095) };
 DSPfract coefficients_LPF[6] = { FRACT_NUM(0.00230631833646038985), FRACT_NUM(0.0046126366729207797), FRACT_NUM(0.00230631833646038985),FRACT_NUM(0.50000000000000000000),FRACT_NUM(-0.8995482047423341),FRACT_NUM(0.408756201692378975) };
-
 
 DSPint mode1 = 1;
 DSPint mode2 = 0;
@@ -41,6 +37,9 @@ DSPfract y_history3[2] = { FRACT_NUM(0.00),FRACT_NUM(0.00) };
 
 DSPfract x_history4[2] = { FRACT_NUM(0.00),FRACT_NUM(0.00) };
 DSPfract y_history4[2] = { FRACT_NUM(0.00),FRACT_NUM(0.00) };
+
+DSPfract leftBuffer[BLOCK_SIZE] = { FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) };
+DSPfract rightBuffer[BLOCK_SIZE] = { FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) };
 
 
 
@@ -72,8 +71,6 @@ DSPaccum second_order_IIR(DSPfract input, DSPfract* coefficients, DSPfract* x_hi
 	return output;
 }
 
-DSPfract leftBuffer[BLOCK_SIZE] = { FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) };
-DSPfract rightBuffer[BLOCK_SIZE] = { FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) ,FRACT_NUM(0.00),FRACT_NUM(0.00) };
 
 void processing() {
 
@@ -94,22 +91,33 @@ void processing() {
 	for (int i = 0; i < BLOCK_SIZE; i++)
 	{
 
-		*(leftPtr + i) = *(leftChannnel + i) * gain;
+		*leftPtr++ = *leftChannnel * gain;
 
-		*(rightPtr + i)= *(rightChannnel + i) * gain;
+		*rightPtr++ = *rightChannnel * gain;
 
 		//surround output left
-		*(leftSurroundChannnel + i) = *(leftChannnel + i) * gain;
+		*leftSurroundChannnel++ = *leftChannnel * gain;
 
 		//surround output right
-		*(rightSurroundChannnel + i)= *(rightChannnel + i) * gain;
+		*rightSurroundChannnel++ = *rightChannnel * gain;
 		
-		/*leftPtr++;
+	
 		leftChannnel++;
-		rightPtr++;
 		rightChannnel++;
-		*/
+	
 	}
+
+	//return pointers to regular value 
+
+	leftPtr = &leftBuffer[0];
+	rightPtr = &rightBuffer[0];
+
+
+	leftChannnel = &sampleBuffer[0][0];
+	rightChannnel = &sampleBuffer[1][0];
+	midleChannnel = &sampleBuffer[2][0];
+
+
 
 	// processing for left channel
 	if (mode1 == 0)
@@ -119,7 +127,7 @@ void processing() {
 			for (DSPint i = 0; i < BLOCK_SIZE; i++)
 			{
 				//HPF
-				*(leftChannnel + i) = second_order_IIR(*(leftPtr + i), coefficients_HPF, x_history, y_history);
+				*leftChannnel++ = second_order_IIR(*leftPtr++, coefficients_HPF, x_history, y_history);
 
 			}
 
@@ -129,7 +137,7 @@ void processing() {
 			for (DSPint i = 0; i < BLOCK_SIZE; i++)
 			{
 				//PASS
-				*(leftChannnel + i) = *(leftPtr + i);
+				*leftChannnel++ = *leftPtr++;
 			}
 		}
 
@@ -140,8 +148,9 @@ void processing() {
 		for (DSPint i = 0; i < BLOCK_SIZE; i++)
 		{
 			//LPF
-			*(leftChannnel + i) = second_order_IIR(*(leftPtr + i), coefficients_LPF, x_history1, y_history1);
-			*(midleChannnel + i)= second_order_IIR(*(leftPtr + i), coefficients_LPF, x_history2, y_history2);
+			*leftChannnel++ = second_order_IIR(*leftPtr, coefficients_LPF, x_history1, y_history1);
+			*midleChannnel++= second_order_IIR(*leftPtr, coefficients_LPF, x_history2, y_history2);
+			leftPtr++;
 
 		}
 	}
@@ -155,7 +164,7 @@ void processing() {
 			for (DSPint i = 0; i < BLOCK_SIZE; i++)
 			{
 				//HPF
-				*(rightChannnel + i) = second_order_IIR(*(rightPtr + i), coefficients_HPF, x_history3, y_history3);
+				*rightChannnel++ = second_order_IIR(*rightPtr++, coefficients_HPF, x_history3, y_history3);
 			}
 
 		}
@@ -164,7 +173,7 @@ void processing() {
 			for (DSPint i = 0; i < BLOCK_SIZE; i++)
 			{
 				//PASS
-				*(rightChannnel + i) = *(rightPtr + i);
+				*rightChannnel++ = *rightPtr++;
 			}
 		}
 
@@ -175,7 +184,7 @@ void processing() {
 		for (DSPint i = 0; i < BLOCK_SIZE; i++)
 		{
 			//LPF
-			*(rightChannnel + i) = second_order_IIR(*(rightPtr + i), coefficients_LPF, x_history4, y_history4);
+			*rightChannnel++ = second_order_IIR(*rightPtr++, coefficients_LPF, x_history4, y_history4);
 		}
 	}
 

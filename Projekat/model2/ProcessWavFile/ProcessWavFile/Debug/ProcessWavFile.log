@@ -1,9 +1,9 @@
 ﻿  main.cpp
 c:\users\student\desktop\ra56-2015\projekat\model2\processwavfile\processwavfile\main.cpp(9): warning C4005: 'MAX_NUM_CHANNEL': macro redefinition
   c:\users\student\desktop\ra56-2015\projekat\model2\processwavfile\processwavfile\common.h(10): note: see previous definition of 'MAX_NUM_CHANNEL'
-c:\users\student\desktop\ra56-2015\projekat\model2\processwavfile\processwavfile\main.cpp(203): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\student\desktop\ra56-2015\projekat\model2\processwavfile\processwavfile\main.cpp(211): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\student\desktop\ra56-2015\projekat\model2\processwavfile\processwavfile\main.cpp(205): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\student\desktop\ra56-2015\projekat\model2\processwavfile\processwavfile\main.cpp(213): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
   ProcessWavFile.vcxproj -> C:\Users\student\Desktop\ra56-2015\Projekat\model2\ProcessWavFile\Debug\ProcessWavFile.exe
   ProcessWavFile.vcxproj -> C:\Users\student\Desktop\ra56-2015\Projekat\model2\ProcessWavFile\Debug\ProcessWavFile.pdb (Full PDB)
