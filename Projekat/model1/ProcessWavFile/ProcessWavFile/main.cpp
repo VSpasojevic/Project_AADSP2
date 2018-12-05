@@ -5,32 +5,35 @@
 #define BLOCK_SIZE 16
 #define MAX_NUM_CHANNEL 5
 
+#define COEFFICIENTS_SIZE 6
+#define HISTORY_SIZE 6
+
 double sampleBuffer[MAX_NUM_CHANNEL][BLOCK_SIZE];
 //trebaju mi koeficjenti, gain, iir2, mode, processing funkcija,
 
-double coefficients_HPF[6] = { 0.95079708342298741000, -1.90159416684597480000, 0.95079708342298741000,1.00000000000000000000,-1.89933342011226030000,0.90416304087280419000 };
-double coefficients_LPF[6] = { 0.00461263667292077970, 0.00922527334584155940, 0.00461263667292077970,1.00000000000000000000,-1.79909640948466820000,0.81751240338475795000 };
+double coefficients_HPF[COEFFICIENTS_SIZE] = { 0.95079708342298741000, -1.90159416684597480000, 0.95079708342298741000,1.00000000000000000000,-1.89933342011226030000,0.90416304087280419000 };
+double coefficients_LPF[COEFFICIENTS_SIZE] = { 0.00461263667292077970, 0.00922527334584155940, 0.00461263667292077970,1.00000000000000000000,-1.79909640948466820000,0.81751240338475795000 };
 
 short mode1 = 1;
 short mode2 = 0;
 
 double gain = 0.50;
 
-double x_history[2];
-double y_history[2];
+double x_history[HISTORY_SIZE];
+double y_history[HISTORY_SIZE];
 
-double x_history1[2];
-double y_history1[2];
+double x_history1[HISTORY_SIZE];
+double y_history1[HISTORY_SIZE];
 
-double x_history2[2];
-double y_history2[2];
+double x_history2[HISTORY_SIZE];
+double y_history2[HISTORY_SIZE];
 
-double x_history3[2];
-double y_history3[2];
+double x_history3[HISTORY_SIZE];
+double y_history3[HISTORY_SIZE];
 
 
-double x_history4[2];
-double y_history4[2];
+double x_history4[HISTORY_SIZE];
+double y_history4[HISTORY_SIZE];
 
 
 
